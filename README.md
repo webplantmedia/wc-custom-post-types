@@ -9,11 +9,11 @@
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
-Portfolio Post Type
+Common post types with easy admin options.
 
 ## Description ##
 
-Common custom post types with minimal configuration to be used with themes. Currently supports portfolio post type.
+Common custom post types with easy admin options to control the rewrite string. Currently supports portfolio post type.
 
 ### Professional Support
 

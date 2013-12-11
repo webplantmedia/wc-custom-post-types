@@ -2,18 +2,18 @@
 
 Contributors: cbaldelomar
 Donate link: http://webplantmedia.com/donate/
-Tags: portfolio, custom portfolio, custom post type, custom post types
+Tags: portfolio, custom portfolio, common post types, custom post type, custom post types
 Requires at least: 3.7
 Tested up to: 3.7.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Portfolio Post Type
+Common post types with easy admin options.
 
 == Description ==
 
-Common custom post types with minimal configuration to be used with themes. Currently supports portfolio post type.
+Common custom post types with easy admin options to control the rewrite string. Currently supports portfolio post type.
 
 ### Professional Support
 
