@@ -2,17 +2,15 @@
 /**
  * File for registering custom post types.
  *
- * @package    CustomContentPortfolio
- * @subpackage Includes
- * @since      0.1.0
- * @author     Justin Tadlock <justin@justintadlock.com>
- * @copyright  Copyright (c) 2013, Justin Tadlock
- * @link       http://themehybrid.com/plugins/custom-content-portfolio
+ * @package    WC Custom Post Types
+ * @since      1.1
+ * @author     Chris Baldelomar <chris@webplantmedia.com>
+ * @copyright  Copyright (c) 2013, Chris Baldelomar
  * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
 
 /* Register custom post types on the 'init' hook. */
-add_action( 'init', 'ccp_register_post_types' );
+add_action( 'init', 'wc_cpt_register_post_types' );
 
 /**
  * Registers post types needed by the plugin.
@@ -21,10 +19,10 @@ add_action( 'init', 'ccp_register_post_types' );
  * @access public
  * @return void
  */
-function ccp_register_post_types() {
+function wc_cpt_register_post_types() {
 
 	/* Get the plugin settings. */
-	$settings = get_option( 'plugin_custom_content_portfolio', ccp_get_default_settings() );
+	$settings = get_option( 'plugin_wc_cpt', wc_cpt_get_default_settings() );
 
 	/* Set up the arguments for the portfolio item post type. */
 	$args = array(
@@ -37,7 +35,7 @@ function ccp_register_post_types() {
 		'show_ui'             => true,
 		'show_in_menu'        => true,
 		'menu_position'       => 12,
-		'menu_icon'           => CCP_URI . 'images/menu-icon.png',
+		'menu_icon'           => WC_CPT_URI . 'images/menu-icon.png',
 		'can_export'          => true,
 		'delete_with_user'    => false,
 		'hierarchical'        => false,
@@ -93,22 +91,22 @@ function ccp_register_post_types() {
 
 		/* Labels used when displaying the posts. */
 		'labels' => array(
-			'name'               => __( 'Portfolio Items',                   'custom-content-portfolio' ),
-			'singular_name'      => __( 'Portfolio Item',                    'custom-content-portfolio' ),
-			'menu_name'          => __( 'Portfolio',                         'custom-content-portfolio' ),
-			'name_admin_bar'     => __( 'Portfolio Item',                    'custom-content-portfolio' ),
-			'add_new'            => __( 'Add New',                           'custom-content-portfolio' ),
-			'add_new_item'       => __( 'Add New Portfolio Item',            'custom-content-portfolio' ),
-			'edit_item'          => __( 'Edit Portfolio Item',               'custom-content-portfolio' ),
-			'new_item'           => __( 'New Portfolio Item',                'custom-content-portfolio' ),
-			'view_item'          => __( 'View Portfolio Item',               'custom-content-portfolio' ),
-			'search_items'       => __( 'Search Portfolio',                  'custom-content-portfolio' ),
-			'not_found'          => __( 'No portfolio items found',          'custom-content-portfolio' ),
-			'not_found_in_trash' => __( 'No portfolio items found in trash', 'custom-content-portfolio' ),
-			'all_items'          => __( 'Portfolio Items',                   'custom-content-portfolio' ),
+			'name'               => __( 'Portfolio Items',                   'wc-custom-post-types' ),
+			'singular_name'      => __( 'Portfolio Item',                    'wc-custom-post-types' ),
+			'menu_name'          => __( 'Portfolio',                         'wc-custom-post-types' ),
+			'name_admin_bar'     => __( 'Portfolio Item',                    'wc-custom-post-types' ),
+			'add_new'            => __( 'Add New',                           'wc-custom-post-types' ),
+			'add_new_item'       => __( 'Add New Portfolio Item',            'wc-custom-post-types' ),
+			'edit_item'          => __( 'Edit Portfolio Item',               'wc-custom-post-types' ),
+			'new_item'           => __( 'New Portfolio Item',                'wc-custom-post-types' ),
+			'view_item'          => __( 'View Portfolio Item',               'wc-custom-post-types' ),
+			'search_items'       => __( 'Search Portfolio',                  'wc-custom-post-types' ),
+			'not_found'          => __( 'No portfolio items found',          'wc-custom-post-types' ),
+			'not_found_in_trash' => __( 'No portfolio items found in trash', 'wc-custom-post-types' ),
+			'all_items'          => __( 'Portfolio Items',                   'wc-custom-post-types' ),
 
 			// Custom labels b/c WordPress doesn't have anything to handle this.
-			'archive_title'      => __( 'Portfolio',                         'custom-content-portfolio' ),
+			'archive_title'      => __( 'Portfolio',                         'wc-custom-post-types' ),
 		)
 	);
 

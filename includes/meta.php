@@ -2,17 +2,15 @@
 /**
  * Registers metadata and related functions for the plugin.
  *
- * @package    CustomContentPortfolio
- * @subpackage Includes
- * @since      0.1.0
- * @author     Justin Tadlock <justin@justintadlock.com>
- * @copyright  Copyright (c) 2013, Justin Tadlock
- * @link       http://themehybrid.com/plugins/custom-content-portfolio
+ * @package    WC Custom Post Types
+ * @since      1.1
+ * @author     Chris Baldelomar <chris@webplantmedia.com>
+ * @copyright  Copyright (c) 2013, Chris Baldelomar
  * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
 
 /* Register meta on the 'init' hook. */
-add_action( 'init', 'ccp_register_meta' );
+add_action( 'init', 'wc_cpt_register_meta' );
 
 /**
  * Registers custom metadata for the plugin.
@@ -21,9 +19,9 @@ add_action( 'init', 'ccp_register_meta' );
  * @access public
  * @return void
  */
-function ccp_register_meta() {
+function wc_cpt_register_meta() {
 
-	register_meta( 'post', 'portfolio_item_url', 'ccp_sanitize_meta' );
+	register_meta( 'post', 'portfolio_item_url', 'wc_cpt_sanitize_meta' );
 }
 
 /**
@@ -38,7 +36,7 @@ function ccp_register_meta() {
  * @param  string $meta_type  The type of metadata (post, comment, user, etc.)
  * @return mixed  $meta_value
  */
-function ccp_sanitize_meta( $meta_value, $meta_key, $meta_type ) {
+function wc_cpt_sanitize_meta( $meta_value, $meta_key, $meta_type ) {
 
 	if ( 'portfolio_item_url' === $meta_key )
 		return esc_url( $meta_value );

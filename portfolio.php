@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: WC Custom Post Types
+ * Plugin Name: WordPress Canvas - Custom Post Types
  * Plugin URI: http://wordpresscanvas.com/
  * Description: Common custom post types with minimal configuration to be used with themes. Currently supports portfolio post type.
  * Version: 1.1
@@ -45,16 +45,16 @@ class WC_Custom_Post_Types {
 	public function constants() {
 
 		/* Set constant path to the plugin directory. */
-		define( 'CCP_DIR', trailingslashit( plugin_dir_path( __FILE__ ) ) );
+		define( 'WC_CPT_DIR', trailingslashit( plugin_dir_path( __FILE__ ) ) );
 
 		/* Set the constant path to the plugin directory URI. */
-		define( 'CCP_URI', trailingslashit( plugin_dir_url( __FILE__ ) ) );
+		define( 'WC_CPT_URI', trailingslashit( plugin_dir_url( __FILE__ ) ) );
 
 		/* Set the constant path to the includes directory. */
-		define( 'CCP_INCLUDES', CCP_DIR . trailingslashit( 'includes' ) );
+		define( 'WC_CPT_INCLUDES', WC_CPT_DIR . trailingslashit( 'includes' ) );
 
 		/* Set the constant path to the admin directory. */
-		define( 'CCP_ADMIN', CCP_DIR . trailingslashit( 'admin' ) );
+		define( 'WC_CPT_ADMIN', WC_CPT_DIR . trailingslashit( 'admin' ) );
 	}
 
 	/**
@@ -66,10 +66,10 @@ class WC_Custom_Post_Types {
 	 */
 	public function includes() {
 
-		require_once( CCP_INCLUDES . 'functions.php' );
-		require_once( CCP_INCLUDES . 'meta.php' );
-		require_once( CCP_INCLUDES . 'post-types.php' );
-		require_once( CCP_INCLUDES . 'taxonomies.php' );
+		require_once( WC_CPT_INCLUDES . 'functions.php' );
+		require_once( WC_CPT_INCLUDES . 'meta.php' );
+		require_once( WC_CPT_INCLUDES . 'post-types.php' );
+		require_once( WC_CPT_INCLUDES . 'taxonomies.php' );
 	}
 
 	/**
@@ -82,7 +82,7 @@ class WC_Custom_Post_Types {
 	public function i18n() {
 
 		/* Load the translation of the plugin. */
-		load_plugin_textdomain( 'custom-content-portfolio', false, 'custom-content-portfolio/languages' );
+		load_plugin_textdomain( 'wc-custom-post-types', false, 'wc-custom-post-types/languages' );
 	}
 
 	/**
@@ -95,7 +95,7 @@ class WC_Custom_Post_Types {
 	public function admin() {
 
 		if ( is_admin() )
-			require_once( CCP_ADMIN . 'admin.php' );
+			require_once( WC_CPT_ADMIN . 'admin.php' );
 	}
 
 	/**
