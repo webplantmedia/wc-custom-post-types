@@ -1,4 +1,4 @@
-=== WordPress Canvas Custom Post Types ===
+=== WordPress Canvas - Custom Post Types ===
 
 Contributors: cbaldelomar
 Donate link: http://webplantmedia.com/donate/
@@ -14,8 +14,6 @@ Portfolio Post Type
 == Description ==
 
 Common custom post types with minimal configuration to be used with themes. Currently supports portfolio post type.
-
-See the shortcodes in action at [WordPress Canvas Shortcodes](http://wordpresscanvas.com/features/shortcodes/).
 
 ### Professional Support
 
@@ -40,7 +38,7 @@ Thank you so much for even considering supporting my work. If you have benefited
 
 ### How do I change the post type name
 
-Head over to your options under General => WC Custom Post Types
+Head over to your options under General => WC Post Types
 
 == Changelog ==
 
