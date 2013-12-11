@@ -139,9 +139,7 @@ function wc_cpt_plugin_settings() {
 		'wc-cpt'
 	);
 
-	/* Get the plugin settings. */
-	$settings = get_option( 'plugin_wc_cpt' );
-	$settings = $settings + wc_cpt_get_default_settings();
+	$settings = wc_cpt_get_plugin_settings();
 
 	add_settings_field(
 		'wc-cpt-root',
@@ -152,17 +150,9 @@ function wc_cpt_plugin_settings() {
 		$settings
 	);
 	add_settings_field(
-		'wc-cpt-base',
+		'wc-cpt-tag-base',
 		__( 'Portfolio tag base', 'wc-custom-post-types' ),
 		'wc_cpt_tag_base_field',
-		'wc-cpt',
-		'wc-cpt-permalink',
-		$settings
-	);
-	add_settings_field(
-		'wc-cpt-cat-base',
-		__( 'Portfolio category base', 'wc-custom-post-types' ),
-		'wc_cpt_cat_base_field',
 		'wc-cpt',
 		'wc-cpt-permalink',
 		$settings
@@ -220,11 +210,29 @@ function wc_cpt_validate_settings( $settings ) {
 	// @todo Sanitize for alphanumeric characters
 	// @todo Both the portfolio_base and portfolio_item_base can't match.
 
-	$settings['portfolio_base'] = $settings['portfolio_base'];
+	$settings['portfolio_tag_base'] = sanitize_title( $settings['portfolio_tag_base'] );
 
-	$settings['portfolio_item_base'] = $settings['portfolio_item_base'];
+	$settings['portfolio_item_base'] = sanitize_title( $settings['portfolio_item_base'] );
 
-	$settings['portfolio_root'] = !empty( $settings['portfolio_root'] ) ? $settings['portfolio_root'] : 'portfolio';
+	$settings['portfolio_root'] = !empty( $settings['portfolio_root'] ) ? sanitize_title( $settings['portfolio_root'] ) : 'portfolio';
+
+	$settings = wc_cpt_check_unique_names( $settings );
+
+	return $settings;
+}
+
+function wc_cpt_check_unique_names( $settings ) {
+	$i = 2;
+
+	if ( $settings['portfolio_root'] == $settings['portfolio_tag_base'] ) {
+		$settings['portfolio_tag_base'] .= '-' . $i;
+		$i++;
+	}
+
+	if ( $settings['portfolio_root'] == $settings['portfolio_item_base'] ) {
+		$settings['portfolio_item_base'] .= '-' . $i;
+		$i++;
+	}
 
 	return $settings;
 }
@@ -259,20 +267,8 @@ function wc_cpt_root_field( $settings ) { ?>
  * @return void
  */
 function wc_cpt_tag_base_field( $settings ) { ?>
-	<input type="text" name="plugin_wc_cpt[portfolio_tag_base]" id="wc-cpt-portfolio-base" class="regular-text code" value="<?php echo esc_attr( $settings['portfolio_tag_base'] ); ?>" />
-	<code><?php echo trailingslashit( home_url( "{$settings['portfolio_root']}/{$settings['portfolio_tag_base']}" ) ); ?>%postname%</code> 
-<?php }
-
-/**
- * Adds the portfolio (taxonomy) base settings field.
- *
- * @since  0.1.0
- * @access public
- * @return void
- */
-function wc_cpt_cat_base_field( $settings ) { ?>
-	<input type="text" name="plugin_wc_cpt[portfolio_cat_base]" id="wc-cpt-portfolio-cat-base" class="regular-text code" value="<?php echo esc_attr( $settings['portfolio_cat_base'] ); ?>" />
-	<code><?php echo trailingslashit( home_url( "{$settings['portfolio_root']}/{$settings['portfolio_cat_base']}" ) ); ?>%postname%</code> 
+	<input type="text" name="plugin_wc_cpt[portfolio_tag_base]" id="wc-cpt-portfolio-tag-base" class="regular-text code" value="<?php echo esc_attr( $settings['portfolio_tag_base'] ); ?>" />
+	<code><?php echo trailingslashit( home_url( "{$settings['portfolio_root']}/{$settings['portfolio_tag_base']}" ) ); ?></code> 
 <?php }
 
 /**
@@ -284,7 +280,7 @@ function wc_cpt_cat_base_field( $settings ) { ?>
  */
 function wc_cpt_item_base_field( $settings ) { ?>
 	<input type="text" name="plugin_wc_cpt[portfolio_item_base]" id="wc-cpt-portfolio-item-base" class="regular-text code" value="<?php echo esc_attr( $settings['portfolio_item_base'] ); ?>" />
-	<code><?php echo trailingslashit( home_url( "{$settings['portfolio_root']}/{$settings['portfolio_item_base']}" ) ); ?>%postname%</code> 
+	<code><?php echo trailingslashit( home_url( "{$settings['portfolio_root']}/{$settings['portfolio_item_base']}" ) ); ?></code> 
 <?php }
 
 /**
@@ -297,9 +293,9 @@ function wc_cpt_item_base_field( $settings ) { ?>
 function wc_cpt_admin_head_style() {
         global $post_type;
 
-	if ( 'portfolio_item' === $post_type ) { ?>
+	if ( 'wc_portfolio_item' === $post_type ) { ?>
 		<style type="text/css">
-			#icon-edit.icon32-posts-portfolio_item {
+			#icon-edit.icon32-posts-wc_portfolio_item {
 				background: transparent url( '<?php echo WC_CPT_URI . 'images/screen-icon.png'; ?>' ) no-repeat;
 			}
 		</style>

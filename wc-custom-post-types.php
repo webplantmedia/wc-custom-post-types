@@ -32,7 +32,7 @@ class WC_Custom_Post_Types {
 		add_action( 'plugins_loaded', array( &$this, 'admin' ), 4 );
 
 		/* Register activation hook. */
-		register_activation_hook( __FILE__, array( &$this, 'activation' ) );
+		// register_activation_hook( __FILE__, array( &$this, 'activation' ) );
 	}
 
 	/**
@@ -67,7 +67,6 @@ class WC_Custom_Post_Types {
 	public function includes() {
 
 		require_once( WC_CPT_INCLUDES . 'functions.php' );
-		require_once( WC_CPT_INCLUDES . 'meta.php' );
 		require_once( WC_CPT_INCLUDES . 'post-types.php' );
 		require_once( WC_CPT_INCLUDES . 'taxonomies.php' );
 	}
