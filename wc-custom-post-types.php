@@ -23,7 +23,7 @@ class WC_Custom_Post_Types {
 		add_action( 'plugins_loaded', array( &$this, 'constants' ), 1 );
 
 		/* Internationalize the text strings used. */
-		add_action( 'plugins_loaded', array( &$this, 'i18n' ), 2 );
+		// add_action( 'plugins_loaded', array( &$this, 'i18n' ), 2 );
 
 		/* Load the functions files. */
 		add_action( 'plugins_loaded', array( &$this, 'includes' ), 3 );

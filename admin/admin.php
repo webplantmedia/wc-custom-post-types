@@ -30,10 +30,6 @@ function wc_cpt_admin_setup() {
 	add_filter( 'manage_edit-portfolio_item_columns', 'wc_cpt_edit_portfolio_item_columns' );
 	add_action( 'manage_portfolio_item_posts_custom_column', 'wc_cpt_manage_portfolio_item_columns', 10, 2 );
 
-	/* Add meta boxes an save metadata. */
-	// add_action( 'add_meta_boxes', 'wc_cpt_add_meta_boxes' );
-	// add_action( 'save_post', 'wc_cpt_portfolio_item_info_meta_box_save', 10, 2 );
-
 	/* Add 32px screen icon. */
 	add_action( 'admin_head', 'wc_cpt_admin_head_style' );
 }
@@ -95,29 +91,6 @@ function wc_cpt_manage_portfolio_item_columns( $column, $post_id ) {
 }
 
 /**
- * Registers new meta boxes for the 'portfolio_item' post editing screen in the admin.
- *
- * @since  0.1.0
- * @access public
- * @param  string  $post_type
- * @return void
- */
-function wc_cpt_add_meta_boxes( $post_type ) {
-
-	if ( 'portfolio_item' === $post_type ) {
-
-		add_meta_box( 
-			'wc-cpt-item-info', 
-			__( 'Project Info', 'wc-custom-post-types' ), 
-			'wc_cpt_portfolio_item_info_meta_box_display', 
-			$post_type, 
-			'side', 
-			'core'
-		);
-	}
-}
-
-/**
  * Displays the content of the portfolio item info meta box.
  *
  * @since  0.1.0
@@ -139,43 +112,6 @@ function wc_cpt_portfolio_item_info_meta_box_display( $post, $metabox ) {
 
 	/* Allow devs to hook in their own stuff here. */
 	do_action( 'wc_cpt_item_info_meta_box', $post, $metabox );
-}
-
-/**
- * Saves the metadata for the portfolio item info meta box.
- *
- * @since  0.1.0
- * @access public
- * @param  int     $post_id
- * @param  object  $post
- * @return void
- */
-function wc_cpt_portfolio_item_info_meta_box_save( $post_id, $post ) {
-
-	if ( !isset( $_POST['wc-cpt-portfolio-item-info-nonce'] ) || !wp_verify_nonce( $_POST['wc-cpt-portfolio-item-info-nonce'], basename( __FILE__ ) ) )
-		return;
-
-	$meta = array(
-		'portfolio_item_url' => esc_url( $_POST['wc-cpt-portfolio-item-url'] )
-	);
-
-	foreach ( $meta as $meta_key => $new_meta_value ) {
-
-		/* Get the meta value of the custom field key. */
-		$meta_value = get_post_meta( $post_id, $meta_key, true );
-
-		/* If there is no new meta value but an old value exists, delete it. */
-		if ( current_user_can( 'delete_post_meta', $post_id, $meta_key ) && '' == $new_meta_value && $meta_value )
-			delete_post_meta( $post_id, $meta_key, $meta_value );
-
-		/* If a new meta value was added and there was no previous value, add it. */
-		elseif ( current_user_can( 'add_post_meta', $post_id, $meta_key ) && $new_meta_value && '' == $meta_value )
-			add_post_meta( $post_id, $meta_key, $new_meta_value, true );
-
-		/* If the new meta value does not match the old value, update it. */
-		elseif ( current_user_can( 'edit_post_meta', $post_id, $meta_key ) && $new_meta_value && $new_meta_value != $meta_value )
-			update_post_meta( $post_id, $meta_key, $new_meta_value );
-	}
 }
 
 /**
@@ -204,7 +140,8 @@ function wc_cpt_plugin_settings() {
 	);
 
 	/* Get the plugin settings. */
-	$settings = get_option( 'plugin_wc_cpt', wc_cpt_get_default_settings() );
+	$settings = get_option( 'plugin_wc_cpt' );
+	$settings = $settings + wc_cpt_get_default_settings();
 
 	add_settings_field(
 		'wc-cpt-root',
@@ -216,15 +153,23 @@ function wc_cpt_plugin_settings() {
 	);
 	add_settings_field(
 		'wc-cpt-base',
-		__( 'Portfolio taxonomy slug', 'wc-custom-post-types' ),
-		'wc_cpt_base_field',
+		__( 'Portfolio tag base', 'wc-custom-post-types' ),
+		'wc_cpt_tag_base_field',
+		'wc-cpt',
+		'wc-cpt-permalink',
+		$settings
+	);
+	add_settings_field(
+		'wc-cpt-cat-base',
+		__( 'Portfolio category base', 'wc-custom-post-types' ),
+		'wc_cpt_cat_base_field',
 		'wc-cpt',
 		'wc-cpt-permalink',
 		$settings
 	);
 	add_settings_field(
 		'wc-cpt-item-base',
-		__( 'Portfolio item slug', 'wc-custom-post-types' ),
+		__( 'Portfolio item base', 'wc-custom-post-types' ),
 		'wc_cpt_item_base_field',
 		'wc-cpt',
 		'wc-cpt-permalink',
@@ -233,13 +178,14 @@ function wc_cpt_plugin_settings() {
 }
 
 function wc_cpt_display_page() {
+	global $wp_rewrite;
 	?>
 	<div class="wrap">
 		<?php screen_icon(); ?>
-		<h2 class="nav-tab-wrapper">WordPress Canvas - Custom Post Types</h2>
+		<h2>WordPress Canvas - Custom Post Types</h2>
 
 		<?php if ( isset( $_GET['settings-updated'] ) ) : ?>
-			<div id="message" class="updated"><p>After you save, you need to flush your permalinks. Go to General => Permalinks, and click save. This will cause a flush.</p></div>
+			<?php $wp_rewrite->flush_rules(); ?>
 		<?php endif; ?>
 
 		<form id="compile-less-css" method="post" action="options.php">
@@ -312,9 +258,21 @@ function wc_cpt_root_field( $settings ) { ?>
  * @access public
  * @return void
  */
-function wc_cpt_base_field( $settings ) { ?>
-	<input type="text" name="plugin_wc_cpt[portfolio_base]" id="wc-cpt-portfolio-base" class="regular-text code" value="<?php echo esc_attr( $settings['portfolio_base'] ); ?>" />
-	<code><?php echo trailingslashit( home_url( "{$settings['portfolio_root']}/{$settings['portfolio_base']}" ) ); ?>%portfolio%</code> 
+function wc_cpt_tag_base_field( $settings ) { ?>
+	<input type="text" name="plugin_wc_cpt[portfolio_tag_base]" id="wc-cpt-portfolio-base" class="regular-text code" value="<?php echo esc_attr( $settings['portfolio_tag_base'] ); ?>" />
+	<code><?php echo trailingslashit( home_url( "{$settings['portfolio_root']}/{$settings['portfolio_tag_base']}" ) ); ?>%postname%</code> 
+<?php }
+
+/**
+ * Adds the portfolio (taxonomy) base settings field.
+ *
+ * @since  0.1.0
+ * @access public
+ * @return void
+ */
+function wc_cpt_cat_base_field( $settings ) { ?>
+	<input type="text" name="plugin_wc_cpt[portfolio_cat_base]" id="wc-cpt-portfolio-cat-base" class="regular-text code" value="<?php echo esc_attr( $settings['portfolio_cat_base'] ); ?>" />
+	<code><?php echo trailingslashit( home_url( "{$settings['portfolio_root']}/{$settings['portfolio_cat_base']}" ) ); ?>%postname%</code> 
 <?php }
 
 /**

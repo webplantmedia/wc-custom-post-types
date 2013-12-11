@@ -86,7 +86,9 @@ function wc_cpt_register_post_types() {
 			'editor',
 			'excerpt',
 			'author',
-			'thumbnail'
+			'thumbnail',
+			'revisions',
+			'custom-fields',
 		),
 
 		/* Labels used when displaying the posts. */

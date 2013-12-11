@@ -31,7 +31,7 @@ function wc_cpt_register_taxonomies() {
 		'show_in_nav_menus' => true,
 		'show_tagcloud'     => true,
 		'show_admin_column' => true,
-		'hierarchical'      => false,
+		'hierarchical'      => true,
 		'query_var'         => 'portfolio',
 
 		/* Only 2 caps are needed: 'manage_portfolio' and 'edit_portfolio_items'. */
@@ -44,7 +44,7 @@ function wc_cpt_register_taxonomies() {
 
 		/* The rewrite handles the URL structure. */
 		'rewrite' => array(
-			'slug'         => !empty( $settings['portfolio_base'] ) ? "{$settings['portfolio_root']}/{$settings['portfolio_base']}" : $settings['portfolio_root'],
+			'slug'         => !empty( $settings['portfolio_cat_base'] ) ? "{$settings['portfolio_root']}/{$settings['portfolio_cat_base']}" : $settings['portfolio_root'],
 			'with_front'   => false,
 			'hierarchical' => false,
 			'ep_mask'      => EP_NONE
