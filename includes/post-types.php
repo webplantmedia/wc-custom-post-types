@@ -64,7 +64,7 @@ function wc_cpt_register_post_types() {
 
 		/* Labels used when displaying the posts. */
 		'labels' => array(
-			'name'               => __( 'Portfolio Items',                   'wc-custom-post-types' ),
+			'name'               => !empty( $settings['portfolio_name'] ) ? $settings['portfolio_name'] : 'Portfolio Items',
 			'singular_name'      => __( 'Portfolio Item',                    'wc-custom-post-types' ),
 			'menu_name'          => __( 'Portfolio',                         'wc-custom-post-types' ),
 			'name_admin_bar'     => __( 'Portfolio Item',                    'wc-custom-post-types' ),
@@ -79,7 +79,7 @@ function wc_cpt_register_post_types() {
 			'all_items'          => __( 'Portfolio Items',                   'wc-custom-post-types' ),
 
 			// Custom labels b/c WordPress doesn't have anything to handle this.
-			'archive_title'      => __( 'Portfolio',                         'wc-custom-post-types' ),
+			'archive_title'      => !empty( $settings['portfolio_archive_title'] ) ? $settings['portfolio_archive_title'] : 'Portfolio',
 		)
 	);
 

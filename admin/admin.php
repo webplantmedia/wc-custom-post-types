@@ -27,8 +27,8 @@ function wc_cpt_admin_setup() {
 	add_submenu_page( 'options-general.php', 'WordPress Canvas - Custom Post Types', 'WC Post Types', 'manage_options', 'wc-cpt', 'wc_cpt_display_page' );
 
 	/* Custom columns on the edit portfolio items screen. */
-	add_filter( 'manage_edit-portfolio_item_columns', 'wc_cpt_edit_portfolio_item_columns' );
-	add_action( 'manage_portfolio_item_posts_custom_column', 'wc_cpt_manage_portfolio_item_columns', 10, 2 );
+	add_filter( 'manage_edit-wc_portfolio_item_columns', 'wc_cpt_edit_portfolio_item_columns' );
+	add_action( 'manage_wc_portfolio_item_posts_custom_column', 'wc_cpt_manage_portfolio_item_columns', 10, 2 );
 
 	/* Add 32px screen icon. */
 	add_action( 'admin_head', 'wc_cpt_admin_head_style' );
@@ -45,7 +45,7 @@ function wc_cpt_admin_setup() {
 function wc_cpt_edit_portfolio_item_columns( $columns ) {
 
 	unset( $columns['title'] );
-	unset( $columns['taxonomy-portfolio'] );
+	// unset( $columns['taxonomy-wc_portfolio_tag'] );
 
 	$new_columns = array(
 		'cb' => '<input type="checkbox" />',
@@ -55,7 +55,7 @@ function wc_cpt_edit_portfolio_item_columns( $columns ) {
 	if ( current_theme_supports( 'post-thumbnails' ) )
 		$new_columns['thumbnail'] = __( 'Thumbnail', 'wc-custom-post-types' );
 
-	$new_columns['taxonomy-portfolio'] = __( 'Portfolio', 'wc-custom-post-types' );
+	// $new_columns['taxonomy-wc_portfolio_tag'] = __( 'Portfolio', 'wc-custom-post-types' );
 
 	return array_merge( $new_columns, $columns );
 }
@@ -78,9 +78,6 @@ function wc_cpt_manage_portfolio_item_columns( $column, $post_id ) {
 
 			if ( has_post_thumbnail() )
 				the_post_thumbnail( array( 40, 40 ) );
-
-			elseif ( function_exists( 'get_the_image' ) )
-				get_the_image( array( 'image_scan' => true, 'width' => 40, 'height' => 40 ) );
 
 			break;
 
@@ -142,8 +139,16 @@ function wc_cpt_plugin_settings() {
 	$settings = wc_cpt_get_plugin_settings();
 
 	add_settings_field(
+		'wc-cpt-name',
+		__( 'Portfolio Name', 'wc-custom-post-types' ),
+		'wc_cpt_name_field',
+		'wc-cpt',
+		'wc-cpt-permalink',
+		$settings
+	);
+	add_settings_field(
 		'wc-cpt-root',
-		__( 'Portfolio archive', 'wc-custom-post-types' ),
+		__( 'Portfolio root', 'wc-custom-post-types' ),
 		'wc_cpt_root_field',
 		'wc-cpt',
 		'wc-cpt-permalink',
@@ -161,6 +166,14 @@ function wc_cpt_plugin_settings() {
 		'wc-cpt-item-base',
 		__( 'Portfolio item base', 'wc-custom-post-types' ),
 		'wc_cpt_item_base_field',
+		'wc-cpt',
+		'wc-cpt-permalink',
+		$settings
+	);
+	add_settings_field(
+		'wc-cpt-archive-title',
+		__( 'Portfolio Archive Title', 'wc-custom-post-types' ),
+		'wc_cpt_archive_title_field',
 		'wc-cpt',
 		'wc-cpt-permalink',
 		$settings
@@ -210,11 +223,15 @@ function wc_cpt_validate_settings( $settings ) {
 	// @todo Sanitize for alphanumeric characters
 	// @todo Both the portfolio_base and portfolio_item_base can't match.
 
+	$settings['portfolio_name'] = sanitize_text_field( $settings['portfolio_name'] );
+
 	$settings['portfolio_tag_base'] = sanitize_title( $settings['portfolio_tag_base'] );
 
 	$settings['portfolio_item_base'] = sanitize_title( $settings['portfolio_item_base'] );
 
 	$settings['portfolio_root'] = !empty( $settings['portfolio_root'] ) ? sanitize_title( $settings['portfolio_root'] ) : 'portfolio';
+
+	$settings['portfolio_archive_title'] = sanitize_text_field( $settings['portfolio_archive_title'] );
 
 	$settings = wc_cpt_check_unique_names( $settings );
 
@@ -245,6 +262,17 @@ function wc_cpt_check_unique_names( $settings ) {
  * @return void
  */
 function wc_cpt_permalink_section() { ?>
+<?php }
+
+/**
+ * Adds the portfolio item (post type) base settings field.
+ *
+ * @since  0.1.0
+ * @access public
+ * @return void
+ */
+function wc_cpt_name_field( $settings ) { ?>
+	<input type="text" name="plugin_wc_cpt[portfolio_name]" id="wc-cpt-portfolio-name" class="regular-text code" value="<?php echo esc_attr( $settings['portfolio_name'] ); ?>" />
 <?php }
 
 /**
@@ -281,6 +309,17 @@ function wc_cpt_tag_base_field( $settings ) { ?>
 function wc_cpt_item_base_field( $settings ) { ?>
 	<input type="text" name="plugin_wc_cpt[portfolio_item_base]" id="wc-cpt-portfolio-item-base" class="regular-text code" value="<?php echo esc_attr( $settings['portfolio_item_base'] ); ?>" />
 	<code><?php echo trailingslashit( home_url( "{$settings['portfolio_root']}/{$settings['portfolio_item_base']}" ) ); ?></code> 
+<?php }
+
+/**
+ * Adds the portfolio item (post type) base settings field.
+ *
+ * @since  0.1.0
+ * @access public
+ * @return void
+ */
+function wc_cpt_archive_title_field( $settings ) { ?>
+	<input type="text" name="plugin_wc_cpt[portfolio_archive_title]" id="wc-cpt-portfolio-archive-title" class="regular-text code" value="<?php echo esc_attr( $settings['portfolio_archive_title'] ); ?>" />
 <?php }
 
 /**

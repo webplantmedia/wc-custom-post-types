@@ -22,9 +22,11 @@ add_filter( 'post_type_archive_title', 'wc_cpt_post_type_archive_title' );
 function wc_cpt_get_default_settings() {
 
 	$settings = array(
+		'portfolio_name' => 'Portfolio Items',
 		'portfolio_root' => 'portfolio',
 		'portfolio_tag_base' => 'tag',
-		'portfolio_item_base' => 'item'
+		'portfolio_item_base' => 'item',
+		'portfolio_archive_title' => 'Portfolio',
 	);
 
 	return $settings;

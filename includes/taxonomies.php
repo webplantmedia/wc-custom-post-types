@@ -72,7 +72,7 @@ function wc_cpt_register_taxonomies() {
 		'show_in_nav_menus' => true,
 		'show_tagcloud'     => true,
 		'show_admin_column' => true,
-		'hierarchical'      => true,
+		'hierarchical'      => false,
 		'query_var'         => 'portfolio_tag',
 
 		/* The rewrite handles the URL structure. */
