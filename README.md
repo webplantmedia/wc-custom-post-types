@@ -42,6 +42,10 @@ Head over to your options under General => WC Post Types
 
 ## Changelog ##
 
+### Version 1.2
+
+* Changed name and description.
+
 ### Version 1.1
 
 * Plugin released. Everything is new!

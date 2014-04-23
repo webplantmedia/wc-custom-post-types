@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name: WordPress Canvas - Custom Post Types
+ * Plugin Name: WP Canvas - Portfolio
  * Plugin URI: http://wordpresscanvas.com/
- * Description: Common custom post types with minimal configuration to be used with themes. Currently supports portfolio post type.
- * Version: 1.1
+ * Description: Portfolio post types with minimal configuration to be used with themes.
+ * Version: 1.2
  * Author: Chris Baldelomar
  * Author URI: http://webplantmedia.com
  */
