@@ -63,7 +63,7 @@ function wc_cpt_register_taxonomies() {
 	);
 
 	/* Register the 'portfolio' taxonomy. */
-	// register_taxonomy( 'wc_portfolio_cat', array( 'wc_portfolio_item' ), $args );
+	register_taxonomy( 'wc_portfolio_cat', array( 'wc_portfolio_item' ), $args );
 
 	/* Set up the arguments for the portfolio taxonomy. */
 	$args = array(
