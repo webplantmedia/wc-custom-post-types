@@ -68,4 +68,15 @@ function wc_cpt_post_type_archive_title( $title ) {
 
 	return $title;
 }
+
+function wc_cpt_add_action_links( $links ) {
+	return array_merge(
+		array(
+			'settings' => '<a href="' . admin_url( 'options-general.php?page=wc-cpt' ) . '">' . __( 'Settings', 'wc-custom-post-types' ) . '</a>',
+			'seeitems' => '<a href="' . admin_url( 'edit.php?post_type=wc_portfolio_item' ) . '">' . __( 'Items', 'wc-custom-post-types' ) . '</a>',
+		),
+		$links
+	);
+}
+add_filter( 'plugin_action_links_' . WC_CPT_PLUGIN_BASENAME, 'wc_cpt_add_action_links' );
 ?>

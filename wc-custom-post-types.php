@@ -55,6 +55,9 @@ class WC_Custom_Post_Types {
 
 		/* Set the constant path to the admin directory. */
 		define( 'WC_CPT_ADMIN', WC_CPT_DIR . trailingslashit( 'admin' ) );
+
+		/* Set plugin basename */
+		define( 'WC_CPT_PLUGIN_BASENAME', plugin_basename( plugin_dir_path( realpath( __FILE__ ) ) . 'wc-custom-post-types.php' ) );
 	}
 
 	/**
