@@ -42,6 +42,11 @@ Head over to your options under General => WC Post Types
 
 ## Changelog ##
 
+### Version 1.3
+
+* add settings on plugin page
+* added categories for portfolio post type
+
 ### Version 1.2
 
 * Changed name and description.

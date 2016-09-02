@@ -4,7 +4,7 @@ Contributors: cbaldelomar
 Donate link: http://webplantmedia.com/donate/
 Tags: portfolio, custom portfolio, common post types, custom post type, custom post types
 Requires at least: 3.7
-Tested up to: 3.7.1
+Tested up to: 4.6
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -41,6 +41,11 @@ Thank you so much for even considering supporting my work. If you have benefited
 Head over to your options under General => WC Post Types
 
 == Changelog ==
+
+### Version 1.3
+
+* add settings on plugin page
+* added categories for portfolio post type
 
 ### Version 1.2
 

@@ -3,7 +3,7 @@
  * Plugin Name: WP Canvas - Portfolio
  * Plugin URI: http://wordpresscanvas.com/
  * Description: Portfolio post types with minimal configuration to be used with themes.
- * Version: 1.2
+ * Version: 1.3
  * Author: Chris Baldelomar
  * Author URI: http://webplantmedia.com
  */
